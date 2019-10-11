@@ -19,8 +19,6 @@ public class TrainingServiceTest  {
 
     @Before
     public  void onceExecutedBeforeAll() {
-
-
         TrainingDetails trainingDetails1 = new TrainingDetails(0, "Core", excersises, 50);
         TrainingDetails trainingDetails2 = new TrainingDetails(1, "ABS", excersises, 55);
 
@@ -29,14 +27,14 @@ public class TrainingServiceTest  {
     }
 
     @Test
-    public void testgetAllTrainings() {
+    public void getAllTrainings_ShouldReturnNonEmpytList() {
         assertFalse(trainingService.getAllTrainings().isEmpty());
         assertEquals(2,trainingService.trainingDetailsList.size());
         assertNotNull(trainingService.getAllTrainings());
     }
 
     @Test
-    public void testGetTrainingDetailsById() {
+    public void getTrainingDetailsById_GivenValidId_ShouldReturnProperObject() {
         //given
         int id = 1;
 
@@ -49,7 +47,7 @@ public class TrainingServiceTest  {
     }
 
     @Test
-    public void testAddTrainingDetails() {
+    public void addTrainingDetails_GivenValidTraingDetails_ShouldReturnIncreasedListCount() {
         //given
         TrainingDetails trainigToAdd = new TrainingDetails();
         int initialCount = trainingService.trainingDetailsList.size();
@@ -64,7 +62,7 @@ public class TrainingServiceTest  {
 
     }
     @Test
-    public void testRemoveTrainingDetails() {
+    public void removeTrainingDetails_GivenValidTrainigDetails_ShoudReturnDecreasedListCount() {
         //given
         TrainingDetails trainingtoDel = new TrainingDetails();
         trainingService.trainingDetailsList.add(trainingtoDel);
@@ -79,7 +77,7 @@ public class TrainingServiceTest  {
     }
 
     @Test
-    public void testUpdateTrainingDetails() {
+    public void updateTrainingDetails_givenValidTrainingDetails_ShouldReturnUpdatedValue() {
         //given
         TrainingDetails trainingtoUpdate = new TrainingDetails(0, "FBW", excersises, 50);
 

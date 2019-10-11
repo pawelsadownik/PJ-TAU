@@ -1,6 +1,5 @@
 package pl.edu.pjatk.tau.Service;
 
-import org.junit.Before;
 import pl.edu.pjatk.tau.FakeDB.FakeDB;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
 

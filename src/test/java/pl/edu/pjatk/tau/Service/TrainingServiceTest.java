@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
-
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class TrainingServiceTest  {
@@ -17,17 +17,19 @@ public class TrainingServiceTest  {
     List<String> excersises = Stream.of("pullUps", "pushUps", "barDips")
             .collect(Collectors.toList());
 
+    TrainingDetails trainingDetails1 = new TrainingDetails(0, "Core", excersises, 50);
+    TrainingDetails trainingDetails2 = new TrainingDetails(1, "ABS", excersises, 55);
+
     @Before
-    public  void onceExecutedBeforeAll() {
-        TrainingDetails trainingDetails1 = new TrainingDetails(0, "Core", excersises, 50);
-        TrainingDetails trainingDetails2 = new TrainingDetails(1, "ABS", excersises, 55);
+    public  void onceExecutedBeforeEach() {
+
 
         trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails1);
         trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails2);
     }
 
     @Test
-    public void getAllTrainings_ShouldReturnNonEmpytList() {
+    public void getAllTrainings_WhenListIsNotEmpty_ShouldReturnNonEmpytList() {
         assertFalse(trainingService.getAllTrainings().isEmpty());
         assertEquals(2,trainingService.trainingDetailsList.size());
         assertNotNull(trainingService.getAllTrainings());
@@ -44,6 +46,19 @@ public class TrainingServiceTest  {
         //then
         assertNotNull(objectToTest);
         assertEquals("ABS", objectToTest.getName());
+    }
+
+    @Test
+    public void getTrainingDetailsById_GivenInvalidId_ShouldReturnProperException() {
+        //given
+        int id = 10;
+
+        //when
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () ->
+                trainingService.getTrainingDetailsById(id));
+
+        //then
+        assertEquals("IndexOutOfBoundsException", exception.getClass().getSimpleName());
     }
 
     @Test
@@ -86,5 +101,18 @@ public class TrainingServiceTest  {
 
         //then
         assertEquals("FBW", trainingService.trainingDetailsList.get(trainingtoUpdate.getId()).getName());
+    }
+
+    @Test
+    public void updateTrainingDetails_givenInValidTrainingDetails_ShouldReturnProperException() {
+        //given
+        TrainingDetails trainingtoUpdate = new TrainingDetails(-1, "FBW", excersises, 50);
+
+        //when
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () ->
+                trainingService.updateTrainingDetails(trainingtoUpdate));
+
+        //then
+        assertEquals("IndexOutOfBoundsException", exception.getClass().getSimpleName());
     }
 }

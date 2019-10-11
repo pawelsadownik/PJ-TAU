@@ -115,4 +115,13 @@ public class TrainingServiceTest  {
         //then
         assertEquals("IndexOutOfBoundsException", exception.getClass().getSimpleName());
     }
+
+    //JUnit 4 @Test(expected = Exception.class)
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void updateTrainingDetails_givenInValidTrainingDetails_ShouldReturnIndexOfBoundsException() {
+        //given
+        TrainingDetails trainingtoUpdate = new TrainingDetails(-1, "FBW", excersises, 50);
+
+        trainingService.updateTrainingDetails(trainingtoUpdate);
+    }
 }

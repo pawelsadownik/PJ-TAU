@@ -1,15 +1,20 @@
 package pl.edu.pjatk.tau.Service;
 
+import pl.edu.pjatk.tau.domain.AuditableEntity;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public interface ITrainingService {
 
-    LinkedList<TrainingDetails> getAllTrainings();
+    List<TrainingDetails> getAllTrainings();
     TrainingDetails getTrainingDetailsById(int id);
-    void addTrainingDetails(TrainingDetails trainingDetails);
-    void removeTrainingDetails(int id);
-    void updateTrainingDetails(TrainingDetails trainingDetails);
+    int addTrainingDetails(TrainingDetails trainingDetails);
+    int removeTrainingDetails(int id);
+    int updateTrainingDetails(TrainingDetails trainingDetails);
+    boolean canSaveDate(TrainingDetails trainingDetails);
+    boolean canNotSaveDate(TrainingDetails trainingDetails);
+    TrainingDetails canSaveDateToObject(TrainingDetails trainingDetails);
 }

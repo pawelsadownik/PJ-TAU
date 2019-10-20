@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class TrainingDetails {
+public class  TrainingDetails extends AuditableEntity{
 
     private int id;
     private String name;

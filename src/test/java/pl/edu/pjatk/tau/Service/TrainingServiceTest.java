@@ -20,13 +20,13 @@ public class TrainingServiceTest  {
     private static TrainingDetails trainingDetails1;
     private static TrainingDetails trainingDetails2;
 
-
     TrainingService trainingService = new TrainingService();
     List<String> excersises = Stream.of("pullUps", "pushUps", "barDips")
             .collect(Collectors.toList());
 
     @BeforeClass
     public static void setUp(){
+
         mockedService = mock(TrainingService.class);
 
         trainingDetails1 = new TrainingDetails(0,"Core",
@@ -35,13 +35,14 @@ public class TrainingServiceTest  {
         trainingDetails2 = new TrainingDetails(1,"ABS",
                 Arrays.asList("pullUps", "pushUps", "barDips"), 80);
 
-        when(mockedService.getAllTrainings()).thenReturn(Arrays.asList(trainingDetails1, trainingDetails2));
-        when(mockedService.getTrainingDetailsById(0)).thenReturn(trainingDetails1);
-        when(mockedService.addTrainingDetails(trainingDetails1)).thenReturn(trainingDetails1.getId());
-        when(mockedService.updateTrainingDetails(trainingDetails1)).thenReturn(trainingDetails1.getId());
-        when(mockedService.removeTrainingDetails(trainingDetails1.getId())).thenReturn(trainingDetails1.getId());
         when(mockedService.canSaveDate(trainingDetails1)).thenReturn(true);
         when(mockedService.canNotSaveDate(trainingDetails1)).thenReturn(false);
+    }
+
+    @Before
+    public  void onceExecutedBeforeEach() {
+        trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails1);
+        trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails2);
     }
 
     @Test
@@ -61,7 +62,7 @@ public class TrainingServiceTest  {
         int id = 0;
 
         //when
-        TrainingDetails trainingDetails = mockedService.getTrainingDetailsById(id);
+        TrainingDetails trainingDetails = trainingService.getTrainingDetailsById(id);
 
         //then
         assertNotNull(trainingDetails);
@@ -77,44 +78,52 @@ public class TrainingServiceTest  {
         int id = 10;
 
         //when
-        TrainingDetails trainingDetails = mockedService.getTrainingDetailsById(id);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () ->
+                trainingService.getTrainingDetailsById(id));
 
         //then
-        assertNull(trainingDetails);
+        assertEquals("IndexOutOfBoundsException", exception.getClass().getSimpleName());
     }
 
     @Test
-    public void addTrainingDetails_GivenValidTraingDetails_ShouldReturnId() {
+    public void addTrainingDetails_GivenValidTraingDetails_ShouldReturnIncreasedListCount() {
+        //given
+        TrainingDetails trainigToAdd = new TrainingDetails();
+        int initialCount = trainingService.trainingDetailsList.size();
 
-        trainingDetails1.setCreatedDate(LocalDateTime.now());
-        LocalDateTime createdDate = trainingDetails1.getCreatedDate();
-        int id = mockedService.addTrainingDetails(trainingDetails1);
+        //when
+        trainingService.trainingDetailsList.add(trainigToAdd);
 
-        mockedService.addTrainingDetails(trainingDetails2);
-        LocalDateTime aaa = trainingDetails2.getCreatedDate();
-        assertNotNull(id);
-        assertEquals(trainingDetails1.getId(), id);
-        assertEquals(trainingDetails1.getCreatedDate(), createdDate);
+        //then
+        assertEquals(initialCount+1, trainingService.trainingDetailsList.size());
 
+        trainingService.trainingDetailsList.remove(initialCount-1);
     }
 
     @Test
-    public void removeTrainingDetails_GivenValidTrainigDetails_ShoudReturnId() {
+    public void removeTrainingDetails_GivenValidTrainigDetails_ShoudReturnDecreasedListCount() {
+        //given
+        TrainingDetails trainingtoDel = new TrainingDetails();
+        trainingService.trainingDetailsList.add(trainingtoDel);
+        int initialCount = trainingService.trainingDetailsList.size();
 
-        int id = mockedService.removeTrainingDetails(trainingDetails1.getId());
+        //when
+        trainingService.trainingDetailsList.remove(trainingtoDel);
 
-        assertNotNull(id);
-        assertEquals(trainingDetails1.getId(), id);
-
+        //then
+        assertEquals(initialCount-1, trainingService.trainingDetailsList.size());
     }
 
     @Test
     public void updateTrainingDetails_givenValidTrainingDetails_ShouldReturnUpdatedValue() {
+        //given
+        TrainingDetails trainingtoUpdate = new TrainingDetails(0, "FBW", excersises, 50);
 
-        int id = mockedService.updateTrainingDetails(trainingDetails1);
+        //when
+        trainingService.updateTrainingDetails(trainingtoUpdate);
 
-        assertNotNull(id);
-        assertEquals(trainingDetails1.getId(), id);
+        //then
+        assertEquals("FBW", trainingService.trainingDetailsList.get(trainingtoUpdate.getId()).getName());
     }
 
     @Test
@@ -180,5 +189,4 @@ public class TrainingServiceTest  {
         assertNotNull(id);
         assertEquals(trainingDetails1.getCreatedDate(), null);
     }
-
 }

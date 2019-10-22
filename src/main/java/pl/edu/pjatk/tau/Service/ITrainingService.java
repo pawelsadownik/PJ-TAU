@@ -16,5 +16,4 @@ public interface ITrainingService {
     int updateTrainingDetails(TrainingDetails trainingDetails);
     boolean canSaveDate(TrainingDetails trainingDetails);
     boolean canNotSaveDate(TrainingDetails trainingDetails);
-    TrainingDetails canSaveDateToObject(TrainingDetails trainingDetails);
 }

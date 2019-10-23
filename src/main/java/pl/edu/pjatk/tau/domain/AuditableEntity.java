@@ -4,13 +4,46 @@ import java.time.LocalDateTime;
 
 public class AuditableEntity {
 
-    LocalDateTime createdDate;
-    LocalDateTime updatedDate;
-    LocalDateTime lastReadedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+    private LocalDateTime lastReadedDate;
 
-    boolean saveCreatedDate;
-    boolean saveUpdatedDate;
-    boolean saveReadedDate;
+    private boolean saveCreatedDate;
+    private boolean saveUpdatedDate;
+    private boolean saveReadedDate;
+
+    public AuditableEntity() {
+    }
+
+    public AuditableEntity(LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime lastReadedDate) {
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.lastReadedDate = lastReadedDate;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public LocalDateTime getLastReadedDate() {
+        return lastReadedDate;
+    }
+
+    public void setLastReadedDate(LocalDateTime lastReadedDate) {
+        this.lastReadedDate = lastReadedDate;
+    }
 
     public boolean isSaveCreatedDate() {
         return saveCreatedDate;
@@ -35,34 +68,4 @@ public class AuditableEntity {
     public void setSaveReadedDate(boolean saveReadedDate) {
         this.saveReadedDate = saveReadedDate;
     }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        if (this.saveReadedDate){
-        this.createdDate = createdDate;
-        } else {
-            this.createdDate = null;
-        }
-    }
-
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public LocalDateTime getLastReadedDate() {
-        return lastReadedDate;
-    }
-
-    public void setLastReadedDate(LocalDateTime lastReadedDate) {
-        this.lastReadedDate = lastReadedDate;
-    }
-
-
 }

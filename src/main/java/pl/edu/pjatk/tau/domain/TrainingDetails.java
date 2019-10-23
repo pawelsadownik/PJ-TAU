@@ -1,8 +1,8 @@
 package pl.edu.pjatk.tau.domain;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 public class  TrainingDetails extends AuditableEntity{
 
@@ -41,6 +41,18 @@ public class  TrainingDetails extends AuditableEntity{
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public TrainingDetails(int id, String name, List<String> excersises, int duration,
+                           LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime lastReadedDate) {
+
+        super(createdDate, updatedDate, lastReadedDate);
+
+        this.id = id;
+        this.name = name;
+        this.excersises = excersises;
+        this.duration = duration;
+
     }
 
     public TrainingDetails(int id, String name, List<String> excersises, int duration) {

@@ -1,11 +1,19 @@
 package pl.edu.pjatk.tau.Service;
 
 import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.cglib.core.Local;
+import org.mockito.runners.MockitoJUnitRunner;
+import pl.edu.pjatk.tau.Repository.TrainingRepository;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static org.mockito.Mockito.*;
@@ -13,42 +21,45 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class TrainingServiceTest  {
 
-    private static ITrainingService mockedService;
+    private static TrainingService trainingService = new TrainingService();
+    private static TrainingRepository trainingRepository = new TrainingRepository();
     private static TrainingDetails trainingDetails1;
     private static TrainingDetails trainingDetails2;
+    private static TrainingDetails trainingDetails3;
+    private static SetDate mockSetDate;
+    private static TrainingRepository mockRepository;
 
-    TrainingService trainingService = new TrainingService();
+    @Mock
+    List<TrainingDetails> trainingDetailsList;
+
     List<String> excersises = Stream.of("pullUps", "pushUps", "barDips")
             .collect(Collectors.toList());
 
     @BeforeClass
     public static void setUp(){
-
-        mockedService = mock(TrainingService.class);
+        mockSetDate = mock(SetDate.class);
+        mockRepository = mock(TrainingRepository.class);
 
         trainingDetails1 = new TrainingDetails(0,"Core",
                 Arrays.asList("pullUps", "pushUps", "barDips"), 50);
 
         trainingDetails2 = new TrainingDetails(1,"ABS",
                 Arrays.asList("pullUps", "pushUps", "barDips"), 80);
-
-        when(mockedService.canSaveDate(trainingDetails1)).thenReturn(true);
-        when(mockedService.canNotSaveDate(trainingDetails1)).thenReturn(false);
     }
 
     @Before
     public  void onceExecutedBeforeEach() {
-        trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails1);
-        trainingService.fakeDB.getTrainingDetailsList().add(trainingDetails2);
+        trainingService.addTrainingDetails(trainingDetails1);
+        trainingService.addTrainingDetails(trainingDetails2);
     }
 
     @Test
     public void getAllTrainings_WhenListIsNotEmpty_ShouldReturnNonEmpytList() {
         List<TrainingDetails> allTrainings = trainingService.getAllTrainings();
-        assertEquals(2, allTrainings.size());
+        assertNotNull( allTrainings.size());
         TrainingDetails trainingDetails = allTrainings.get(0);
         assertEquals(0, trainingDetails.getId());
         assertEquals(50, trainingDetails.getDuration());
@@ -89,29 +100,27 @@ public class TrainingServiceTest  {
     public void addTrainingDetails_GivenValidTraingDetails_ShouldReturnIncreasedListCount() {
         //given
         TrainingDetails trainigToAdd = new TrainingDetails();
-        int initialCount = trainingService.trainingDetailsList.size();
+        int initialCount = trainingService.getAllTrainings().size();
 
         //when
-        trainingService.trainingDetailsList.add(trainigToAdd);
+        trainingService.addTrainingDetails(trainigToAdd);
 
         //then
-        assertEquals(initialCount+1, trainingService.trainingDetailsList.size());
-
-        trainingService.trainingDetailsList.remove(initialCount-1);
+        assertEquals(initialCount+1, trainingService.getAllTrainings().size());
     }
 
     @Test
     public void removeTrainingDetails_GivenValidTrainigDetails_ShoudReturnDecreasedListCount() {
         //given
         TrainingDetails trainingtoDel = new TrainingDetails();
-        trainingService.trainingDetailsList.add(trainingtoDel);
-        int initialCount = trainingService.trainingDetailsList.size();
+        trainingService.addTrainingDetails(trainingtoDel);
+        int initialCount = trainingService.getAllTrainings().size();
 
         //when
-        trainingService.trainingDetailsList.remove(trainingtoDel);
+        trainingService.removeTrainingDetails(trainingtoDel.getId());
 
         //then
-        assertEquals(initialCount-1, trainingService.trainingDetailsList.size());
+        assertEquals(initialCount-1, trainingService.getAllTrainings().size());
     }
 
     @Test
@@ -123,7 +132,7 @@ public class TrainingServiceTest  {
         trainingService.updateTrainingDetails(trainingtoUpdate);
 
         //then
-        assertEquals("FBW", trainingService.trainingDetailsList.get(trainingtoUpdate.getId()).getName());
+        assertEquals("FBW", trainingService.getTrainingDetailsById(trainingtoUpdate.getId()).getName());
     }
 
     @Test
@@ -149,44 +158,61 @@ public class TrainingServiceTest  {
     }
 
     @Test
-    public void unableToSetCreatedDate_WhenAddingObject_ShouldReturnCreatedDateAsNull() {
+    public void addTrainingDetails_WithValidObject_ShouldSaveCreatedDate() {
+        //given
+        LocalDateTime expectedDate = LocalDateTime.now();
+        TrainingDetails trainingDetails3 = new TrainingDetails();
+        trainingDetails3.setCreatedDate(expectedDate);
 
-        LocalDateTime createdDate = trainingDetails1.getCreatedDate();
-        int id = mockedService.addTrainingDetails(trainingDetails1);
+        //when
+        when(mockRepository.addTrainingDetails(trainingDetails3)).thenReturn(3);
+        when(mockRepository.getTrainingDetailsById(3)).thenReturn(trainingDetails3);
+        int id = mockRepository.addTrainingDetails(trainingDetails3);
+        LocalDateTime actualDate = mockRepository.getTrainingDetailsById(id).getCreatedDate();
 
-        mockedService.addTrainingDetails(trainingDetails1);
-
-        assertNull(trainingDetails1.getCreatedDate());
-        assertEquals(trainingDetails1.getCreatedDate(), createdDate);
-
+        //then
+        assertNotNull(trainingDetails3.getCreatedDate());
+        assertEquals(expectedDate,actualDate);
     }
 
     @Test
-    public void addTrainingDetails_WithEnabledDateOption_ShouldSaveDate() {
+    public void updateTrainingDetails_WithValidObject_ShouldSaveUpdateDate() {
+        //given
+        LocalDateTime expectedDate = LocalDateTime.now();
+        TrainingDetails trainingDetails4 = new TrainingDetails();
+        trainingDetails4.setCreatedDate(expectedDate);
 
-        LocalDateTime createdDate = null;
+        //when
+        when(mockRepository.updateTrainingDetails(trainingDetails4)).thenReturn(4);
+        when(mockRepository.getTrainingDetailsById(4)).thenReturn(trainingDetails4);
+        int id = mockRepository.updateTrainingDetails(trainingDetails4);
+        LocalDateTime actualDate = mockRepository.getTrainingDetailsById(id).getCreatedDate();
 
-        if(mockedService.canSaveDate(trainingDetails1)) {
-            trainingDetails1.setCreatedDate(LocalDateTime.now());
-            createdDate = trainingDetails1.getCreatedDate();
-        }
-        else {
-            createdDate = null;
-        }
-        assertEquals(trainingDetails1.getCreatedDate(), createdDate);
+        //then
+        assertNotNull(trainingDetails4.getCreatedDate());
+        assertEquals(expectedDate,actualDate);
     }
 
     @Test
-    public void addTrainingDetails_WithDisabledDateOption_Should() {
+    public void getTrainingDetails_WithValidObject_ShouldSaveReadDate() {
+        //given
+        LocalDateTime expectedDate = LocalDateTime.now();
+        TrainingDetails trainingDetails5 = new TrainingDetails();
+        trainingDetails5.setLastReadedDate(expectedDate);
 
-        LocalDateTime createdDate = null;
-        trainingDetails1.setSaveCreatedDate(mockedService.canNotSaveDate(trainingDetails1));
+        //when
+        when(mockRepository.getTrainingDetailsById(5)).thenReturn(trainingDetails5);
+        LocalDateTime actualDate = mockRepository.getTrainingDetailsById(5).getLastReadedDate();
 
-        trainingDetails1.setCreatedDate(LocalDateTime.now());
-        createdDate = trainingDetails1.getCreatedDate();
-        int id = mockedService.addTrainingDetails(trainingDetails1);
+        //then
+        assertNotNull(trainingDetails5.getLastReadedDate());
+        assertEquals(expectedDate,actualDate);
+    }
 
-        assertNotNull(id);
-        assertEquals(trainingDetails1.getCreatedDate(), null);
+    @Test
+    public void collectionSizeInvocationNumber() {
+        trainingDetailsList.size();
+        trainingDetailsList.size();
+        verify(trainingDetailsList, times(2)).size();
     }
 }

@@ -17,7 +17,7 @@ public class SetDate {
     public LocalDateTime setUpdateDate (TrainingDetails trainingDetails){
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        trainingDetails.setCreatedDate(localDateTime);
+        trainingDetails.setUpdatedDate(localDateTime);
 
         return localDateTime;
     }

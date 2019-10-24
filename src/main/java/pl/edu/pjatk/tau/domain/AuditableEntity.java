@@ -8,9 +8,9 @@ public class AuditableEntity {
     private LocalDateTime updatedDate;
     private LocalDateTime lastReadedDate;
 
-    private boolean saveCreatedDate;
-    private boolean saveUpdatedDate;
-    private boolean saveReadedDate;
+    private boolean saveCreatedDate = true;
+    private boolean saveUpdatedDate = true;
+    private boolean saveReadedDate = true;
 
     public AuditableEntity() {
     }

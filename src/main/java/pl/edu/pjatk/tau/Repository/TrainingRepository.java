@@ -1,9 +1,7 @@
 package pl.edu.pjatk.tau.Repository;
 
 import pl.edu.pjatk.tau.FakeDB.FakeDB;
-import pl.edu.pjatk.tau.Service.SetDate;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,12 +19,13 @@ public class TrainingRepository implements ITrainingRepository {
     }
 
     public TrainingDetails getTrainingDetailsById(int id) {
-        TrainingDetails trainingDetails =  trainingDetailsList.stream()
-                .filter(a -> a.getId() == id).collect(Collectors.toList()).get(0);
-        trainingDetails.setLastReadedDate(LocalDateTime.now());
+        //Because of using List as a DB
+        TrainingDetails trainingDetails =  trainingDetailsList.get(id);
 
-        updateTrainingDetails(trainingDetails);
-
+        if (trainingDetails.isSaveReadedDate()) {
+            trainingDetails.setLastReadedDate(LocalDateTime.now());
+            updateTrainingDetails(trainingDetails);
+        }
         return trainingDetails;
     }
 

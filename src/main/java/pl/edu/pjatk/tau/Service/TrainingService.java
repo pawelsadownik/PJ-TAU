@@ -25,9 +25,12 @@ public class TrainingService implements ITrainingService {
 
     public int addTrainingDetails(TrainingDetails trainingDetails) {
 
-        setDate.setCreateDate(trainingDetails);
+        if (trainingDetails.isSaveCreatedDate()) {
+            setDate.setCreateDate(trainingDetails);
+        }
+        trainingRepository.addTrainingDetails(trainingDetails);
 
-        return trainingRepository.addTrainingDetails(trainingDetails);
+        return trainingRepository.trainingDetailsList.indexOf(trainingDetails);
     }
 
     public int removeTrainingDetails(int id) {
@@ -37,17 +40,39 @@ public class TrainingService implements ITrainingService {
 
     public int updateTrainingDetails(TrainingDetails trainingDetails) {
 
-        setDate.setUpdateDate(trainingDetails);
+        if (trainingDetails.isSaveUpdatedDate()) {
+            setDate.setUpdateDate(trainingDetails);
+        }
         return trainingRepository.updateTrainingDetails(trainingDetails);
     }
 
-    public boolean canSaveDate (TrainingDetails trainingDetails) {
+    public boolean canSaveCreateDate (TrainingDetails trainingDetails) {
         trainingDetails.setSaveCreatedDate(true);
         return true;
     }
 
-    public boolean canNotSaveDate (TrainingDetails trainingDetails) {
+    public boolean canNotSaveCreateDate (TrainingDetails trainingDetails) {
         trainingDetails.setSaveCreatedDate(false);
+        return false;
+    }
+
+    public boolean canSaveUpdateDate (TrainingDetails trainingDetails) {
+        trainingDetails.setSaveUpdatedDate(true);
+        return true;
+    }
+
+    public boolean canNotSaveUpdateDate (TrainingDetails trainingDetails) {
+        trainingDetails.setSaveUpdatedDate(false);
+        return false;
+    }
+
+    public boolean canSaveReadedDate (TrainingDetails trainingDetails) {
+        trainingDetails.setSaveReadedDate(true);
+        return true;
+    }
+
+    public boolean canNotSaveReadedDate (TrainingDetails trainingDetails) {
+        trainingDetails.setSaveReadedDate(false);
         return false;
     }
 }

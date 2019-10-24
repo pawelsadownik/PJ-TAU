@@ -11,9 +11,17 @@ public interface ITrainingService {
 
     List<TrainingDetails> getAllTrainings();
     TrainingDetails getTrainingDetailsById(int id);
+
     int addTrainingDetails(TrainingDetails trainingDetails);
     int removeTrainingDetails(int id);
     int updateTrainingDetails(TrainingDetails trainingDetails);
-    boolean canSaveDate(TrainingDetails trainingDetails);
-    boolean canNotSaveDate(TrainingDetails trainingDetails);
+
+    boolean canSaveCreateDate(TrainingDetails trainingDetails);
+    boolean canNotSaveCreateDate(TrainingDetails trainingDetails);
+
+    boolean canSaveUpdateDate(TrainingDetails trainingDetails);
+    boolean canNotSaveUpdateDate(TrainingDetails trainingDetails);
+
+    boolean canSaveReadedDate(TrainingDetails trainingDetails);
+    boolean canNotSaveReadedDate(TrainingDetails trainingDetails);
 }

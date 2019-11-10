@@ -16,7 +16,7 @@ Feature: Find By Regex?
     Given there is a collection of entities
       | name | duration |
       | ABS  | 50       |
-      | CORE | 60       |
+      | Core | 60       |
       | FBW  | 35       |
 
     When I give a regex .*ABS
@@ -26,10 +26,10 @@ Feature: Find By Regex?
       |ABS   | 50      |
 
   Scenario: Remove entities by list
-    Given there is a collection of entities
+    Given there is a full collection of entities
       | name | duration |
       | ABS  | 50       |
-      | CORE | 60       |
+      | Core | 60       |
       | FBW  | 35       |
 
     When I give a list

@@ -76,6 +76,12 @@ public class MyStepdefs {
         assertTrue(filteredList.get(0).getName().equals(arg.get(0).getName()));
     }
 
+    @Given("^there is a a full collection of entities")
+    public void thereIsFUllACollectionOfEntities(List<TrainingDetails> arg) throws Throwable {
+        trainingDetailsList = new ArrayList<TrainingDetails>();
+        trainingDetailsList.addAll(arg);
+    }
+
     @When("^I give a list$")
     public void i_give_a_list(List<TrainingDetails> listToRemove) throws Exception {
 

@@ -6,6 +6,7 @@ import pl.edu.pjatk.tau.domain.TrainingDetails;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class TrainingService implements ITrainingService {
@@ -22,6 +23,7 @@ public class TrainingService implements ITrainingService {
 
         return trainingRepository.getTrainingDetailsById(id);
     }
+
 
     public int addTrainingDetails(TrainingDetails trainingDetails) {
 
@@ -74,5 +76,12 @@ public class TrainingService implements ITrainingService {
     public boolean canNotSaveReadedDate (TrainingDetails trainingDetails) {
         trainingDetails.setSaveReadedDate(false);
         return false;
+    }
+
+    public List<TrainingDetails> getTrainingDetailByRegex(String reg) {
+
+    return trainingRepository.getAllTrainings().stream()
+            .filter(s -> s.getName().matches(reg))
+            .collect(Collectors.toList());
     }
 }

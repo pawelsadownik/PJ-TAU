@@ -12,6 +12,8 @@ public interface ITrainingService {
     List<TrainingDetails> getAllTrainings();
     TrainingDetails getTrainingDetailsById(int id);
 
+    List<TrainingDetails> getTrainingDetailByRegex(String pattern);
+
     int addTrainingDetails(TrainingDetails trainingDetails);
     int removeTrainingDetails(int id);
     int updateTrainingDetails(TrainingDetails trainingDetails);

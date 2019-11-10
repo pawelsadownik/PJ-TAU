@@ -84,4 +84,11 @@ public class TrainingService implements ITrainingService {
             .filter(s -> s.getName().matches(reg))
             .collect(Collectors.toList());
     }
+
+    public void removeTrainigDetailsByGivenList(LinkedList<TrainingDetails> listToremove) {
+        while(listToremove.size() != 0) {
+            TrainingDetails toRemove = listToremove.pop();
+            trainingRepository.getAllTrainings().removeIf(t -> t.getName().equals(toRemove.getName()));
+        }
+    }
 }

@@ -25,3 +25,19 @@ Feature: Find By Regex?
       |name  |duration |
       |ABS   | 50      |
 
+  Scenario: Remove entities by list
+    Given there is a collection of entities
+      | name | duration |
+      | ABS  | 50       |
+      | CORE | 60       |
+      | FBW  | 35       |
+
+    When I give a list
+      |name  |duration |
+      |ABS   | 50      |
+      |Core  | 60      |
+
+    Then I get updatedList
+      |name  |duration |
+      |FBW   | 35      |
+

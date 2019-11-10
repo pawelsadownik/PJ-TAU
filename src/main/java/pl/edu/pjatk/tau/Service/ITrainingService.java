@@ -14,6 +14,8 @@ public interface ITrainingService {
 
     List<TrainingDetails> getTrainingDetailByRegex(String pattern);
 
+    void removeTrainigDetailsByGivenList(LinkedList<TrainingDetails> listToremove);
+
     int addTrainingDetails(TrainingDetails trainingDetails);
     int removeTrainingDetails(int id);
     int updateTrainingDetails(TrainingDetails trainingDetails);

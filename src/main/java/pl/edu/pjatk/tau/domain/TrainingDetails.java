@@ -1,9 +1,12 @@
 package pl.edu.pjatk.tau.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+@Entity
+@Table(name = "TrainingDetails")
 public class  TrainingDetails extends AuditableEntity{
 
     private int id;

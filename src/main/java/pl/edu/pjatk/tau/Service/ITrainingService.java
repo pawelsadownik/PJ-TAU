@@ -1,12 +1,13 @@
 package pl.edu.pjatk.tau.Service;
 
+import org.springframework.stereotype.Service;
 import pl.edu.pjatk.tau.domain.AuditableEntity;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface ITrainingService {
 
     List<TrainingDetails> getAllTrainings();

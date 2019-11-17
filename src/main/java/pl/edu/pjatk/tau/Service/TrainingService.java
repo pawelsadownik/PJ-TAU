@@ -1,5 +1,6 @@
 package pl.edu.pjatk.tau.Service;
 
+import org.springframework.stereotype.Service;
 import pl.edu.pjatk.tau.FakeDB.FakeDB;
 import pl.edu.pjatk.tau.Repository.TrainingRepository;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Service
 public class TrainingService implements ITrainingService {
 
     SetDate setDate = new SetDate();

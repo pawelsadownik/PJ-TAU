@@ -1,6 +1,5 @@
 package pl.edu.pjatk.tau.Repository;
 
-import org.springframework.stereotype.Repository;
 import pl.edu.pjatk.tau.FakeDB.FakeDB;
 import pl.edu.pjatk.tau.domain.TrainingDetails;
 import java.time.LocalDateTime;
@@ -8,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Repository
-public class TrainingRepository implements ITrainingRepository {
+
+public class TrainingRepository  {
 
     public FakeDB fakeDB = new FakeDB();
 

@@ -7,7 +7,7 @@ import pl.edu.pjatk.tau.domain.TrainingDetails;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-@Service
+
 public interface ITrainingService {
 
     List<TrainingDetails> getAllTrainings();

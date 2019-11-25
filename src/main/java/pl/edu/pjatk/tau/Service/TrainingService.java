@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Service
 public class TrainingService implements ITrainingService {
 
     SetDate setDate = new SetDate();

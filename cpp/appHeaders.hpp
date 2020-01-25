@@ -15,7 +15,7 @@ struct Data
 std::map<int, Data> db;
 
 map<int, Data> getAll();
-Data getById();
+Data getById(int id);
 int addData(Data data);
 int removeData(int id);
 

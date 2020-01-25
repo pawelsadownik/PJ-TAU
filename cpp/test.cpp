@@ -1,15 +1,29 @@
-#include <catch2/catch.hpp>
+#define CATCH_CONFIG_MAIN
 
-#include "appHeaders.hpp"
+#include <catch.hpp>
 
-Data data = {1, "xxx", 20};
+#include "appHeaders.hpp";
 
+Data dataTest = {1, "xxx", 20};
 
-TEST_CASE("Testing Crud db") {
-    REQUIRE(getAll() == 0);
-    REQUIRE(addData(data) == 1);
-    REQUIRE(getAll() == 1);
-    REQUIRE(getById(0).name == xxx);
-    REQUIRE_THROWS_AS(getById(999) == std::Out-of-bounds exception captured!);
+TEST_CASE("Testing getting all elements") {
+    REQUIRE(getAll().size() == 0);
+}
+TEST_CASE("Testing adding data to db") {
+    REQUIRE(addData(dataTest) == 1);
+}
+TEST_CASE("Testing if size changed after add") {
+    REQUIRE(getAll().size() == 1);
+}
+
+TEST_CASE("Testing getting by ID") {
+    REQUIRE(getById(0).name == "xxx");
+}
+
+TEST_CASE("Testing  exception with invalid id") {
+    REQUIRE_THROWS_WITH(getById(999), "Out-of-bounds exception captured!");
+}
+
+TEST_CASE("Testing Removing item from db") {
     REQUIRE(removeData(0) == 0);
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<style>
+input:invalid {
+  border: 2px solid red;
+}
+input:valid {
+  border: 2px solid green;
+}
+</style>
+<body>
+
+<p>Valid number 10-20</p>
+<input id="id1" type="number" min="10" max="20" required>
+
+<p>Valid number 100-200</p>
+<input id="id1" type="number" min="100" max="200"required>
+
+<script>
+function myFunction() {
+  var inpObj = document.getElementById("id1");
+  if (inpObj.value < 15) {
+    document.getElementById('id1').className = "invalid";
+  } else {
+    document.getElementById('id1').className = "valid";
+  }
+}
+
+</script>
+</body>
+</html>

@@ -13,3 +13,15 @@ describe("Old available ", function(){
     expect(document.getElementById("id2").className).toBe("valid");
     });
 })
+
+describe("Empty value ", function(){
+  it("css change", function(){
+    expect(formDocument("id3", "")).toThrow(new Error("empty"));
+    });
+})
+
+describe("Wrong value", function(){
+  it("css change", function(){
+    expect(formDocument("id4", a)).toThrow(new Error("not a number"));
+    });
+})

@@ -7,9 +7,15 @@ export function formDocument(id, value) {
   document.body.appendChild(x);
 
   var inpObj = document.getElementById(id);
-  if (inpObj.value < 15) {
-    document.getElementById(id).className = "invalid";
-  } else {
-    document.getElementById(id).className = "valid";
+
+
+    if(inpObj.value == "") throw(new TypeError("empty"));
+
+    if(isNaN(inpObj.value)) throw(new TypeError("not a number"));
+
+    if (inpObj.value < 15) {
+      document.getElementById(id).className = "invalid";
+    } else {
+      document.getElementById(id).className = "valid";
+    }
   }
-}
